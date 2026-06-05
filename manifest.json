@@ -1,0 +1,24 @@
+{
+  "name": "OE Corinthian — Contract Tracker",
+  "short_name": "OE Tracker",
+  "description": "Suivi de contrat pour l'équipage du OE Corinthian — Orient Express Sailing Yachts",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0D0A07",
+  "theme_color": "#C9A96E",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "OE_Corinthian_Logo.png.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "OE_Corinthian_Logo.png.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
