@@ -1,5 +1,5 @@
 // OE Corinthian Contract Tracker — Service Worker v1.0
-const CACHE_NAME = 'oe-tracker-v2';
+const CACHE_NAME = 'oe-tracker-v3';
 const ASSETS = [
   './',
   './index.html',

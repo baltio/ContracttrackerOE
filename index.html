@@ -87,6 +87,7 @@
         --muted:#6B7E8F;
         --overlay-top:rgba(13,27,42,.72);
         --overlay-mid:rgba(13,27,42,.46);
+        --contract-progress:0;
     }
     .theme-day{
         --bg:#F2EFE8;
@@ -101,17 +102,32 @@
     *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
     html,body{background:var(--bg);color:var(--text);font-family:"Roboto Mono",monospace;min-height:100%;overscroll-behavior:none}
     body{position:relative}
-    body::before{content:"";position:fixed;inset:0;z-index:-2;background-image:url('Homepage_Revolutionary Design.webp');background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.34;pointer-events:none}
-    body::after{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(to bottom,var(--overlay-top) 0%,var(--overlay-mid) 50%,var(--overlay-top) 100%);pointer-events:none}
+    body::before{content:"";position:fixed;inset:0;z-index:-2;background-image:url('Homepage_Revolutionary Design.webp');background-size:cover;background-position:center;background-repeat:no-repeat;opacity:.34;animation:sun-cycle 52s ease-in-out infinite;pointer-events:none;transition:opacity .8s ease}
+    body::after{content:"";position:fixed;inset:0;z-index:-1;background:linear-gradient(to bottom,var(--overlay-top) 0%,var(--overlay-mid) 50%,var(--overlay-top) 100%);animation:sky-overlay 36s ease-in-out infinite;pointer-events:none;transition:background .8s ease,opacity .8s ease}
+
+    @keyframes sun-cycle{
+        0%{filter:hue-rotate(-7deg) saturate(1.08) brightness(.92)}
+        45%{filter:hue-rotate(0deg) saturate(1.18) brightness(1.04)}
+        100%{filter:hue-rotate(8deg) saturate(1.03) brightness(.9)}
+    }
+    @keyframes sky-overlay{
+        0%,100%{opacity:.9}
+        50%{opacity:.68}
+    }
 
     /* ─── Gold rule ─── */
     .oe-rule{height:1px;background:linear-gradient(90deg,transparent,#C9A96E 30%,#E8D4A8 50%,#C9A96E 70%,transparent)}
 
     /* ─── Cards ─── */
-    .oe-card{position:relative;transform-style:preserve-3d;will-change:transform;background:linear-gradient(135deg,var(--card-a) 0%,var(--card-b) 100%);border:1px solid var(--border);border-radius:8px;transition:box-shadow .22s,transform .22s}
+    .oe-card{position:relative;overflow:hidden;transform-style:preserve-3d;will-change:transform;background:linear-gradient(135deg,var(--card-a) 0%,var(--card-b) 100%);border:1px solid var(--border);border-radius:8px;transition:background .6s ease,border-color .6s ease,box-shadow .22s,transform .22s}
     .oe-card::before{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(circle at var(--glare-x,50%) var(--glare-y,0%),rgba(255,255,255,.25),rgba(255,255,255,0) 44%);opacity:0;transition:opacity .2s;pointer-events:none}
+    .oe-card::after{content:"";position:absolute;left:-30%;right:-30%;bottom:-24px;height:42px;background:linear-gradient(90deg,rgba(42,157,143,0),rgba(232,212,168,.20),rgba(42,157,143,0));transform:translateX(-25%);opacity:.32;animation:water-shimmer 6s linear infinite;pointer-events:none}
     .oe-card:hover{box-shadow:0 12px 30px rgba(201,169,110,.20)}
     .oe-card:hover::before{opacity:1}
+    @keyframes water-shimmer{
+        0%{transform:translateX(-30%)}
+        100%{transform:translateX(30%)}
+    }
     .bd-gold   {border-left:4px solid #C9A96E}
     .bd-teal   {border-left:4px solid #2A9D8F}
     .bd-alert  {border-left:4px solid #E76F51}
@@ -149,8 +165,12 @@
 
     /* ─── Logo bar ─── */
     .logo-bar{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
-    .logo-single{height:62px;object-fit:contain;filter:drop-shadow(0 3px 10px rgba(201,169,110,.45))}
+    .logo-single{height:62px;object-fit:contain;filter:drop-shadow(0 0 10px rgba(201,169,110,.45));animation:logo-halo 3.2s ease-in-out infinite}
     @media(max-width:640px){.logo-single{height:50px}}
+    @keyframes logo-halo{
+        0%,100%{filter:drop-shadow(0 0 8px rgba(201,169,110,.40))}
+        50%{filter:drop-shadow(0 0 18px rgba(201,169,110,.88))}
+    }
 
     /* ─── Ship schema ─── */
     .ship-schema{width:auto;max-width:100%;height:auto;margin:0 auto;display:block;opacity:.96;object-fit:contain;filter:drop-shadow(0 2px 12px rgba(201,169,110,.25))}
@@ -161,9 +181,15 @@
 
     /* ─── Progress bar ─── */
     .prog-track{height:5px;background:#2E3F52;border-radius:3px;overflow:hidden}
-    .prog-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#2A9D8F,#C9A96E);transition:width 1s ease}
+    .prog-fill{position:relative;height:100%;border-radius:3px;background:linear-gradient(90deg,#2A9D8F,#C9A96E);transition:width 1s ease}
+    .prog-fill::after{content:"";position:absolute;top:0;right:-18px;width:24px;height:100%;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.65),rgba(255,255,255,0));animation:wake 1.2s linear infinite}
+    @keyframes wake{
+        0%{transform:translateX(-6px);opacity:.5}
+        100%{transform:translateX(6px);opacity:1}
+    }
 
     /* ─── Rain canvas ─── */
+    #sea-spray-canvas{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.28;mix-blend-mode:screen}
     #rain-canvas{position:fixed;inset:0;pointer-events:none;z-index:999}
 
     /* ─── Clickable ─── */
@@ -185,6 +211,19 @@
     .theme-day .text-oe-muted{color:var(--muted)!important}
     .theme-day .text-oe-ivory{color:var(--text)!important}
 
+    .app-shell{position:relative;z-index:1}
+    .theme-transition, .theme-transition *{transition:background-color .6s ease,color .6s ease,border-color .6s ease,box-shadow .6s ease,filter .8s ease,opacity .6s ease}
+
+    .reveal-block{opacity:0;transform:translateY(20px) scale(.98);filter:blur(3px);animation:reveal-up .8s cubic-bezier(.17,.84,.44,1) forwards;animation-delay:var(--reveal-delay,0ms)}
+    @keyframes reveal-up{
+        to{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+    }
+
+    @media (prefers-reduced-motion: reduce){
+        body::before,body::after,.logo-single,.oe-card::after,.prog-fill::after{animation:none!important}
+        .reveal-block{animation:none!important;opacity:1;transform:none;filter:none}
+    }
+
     /* ─── Fiesta ─── */
     .fiesta-mode{animation:sail-sway 1.2s infinite ease-in-out;color:#C9A96E}
 
@@ -194,9 +233,10 @@
 </head>
 
 <body class="theme-night" onload="initApp()">
+<canvas id="sea-spray-canvas"></canvas>
 <canvas id="rain-canvas"></canvas>
 
-<div class="min-h-screen flex flex-col items-center safe-pb">
+<div class="min-h-screen flex flex-col items-center safe-pb app-shell">
 
     <!-- ══════════ HERO HEADER ══════════ -->
     <header class="hero-bg w-full">
@@ -462,10 +502,12 @@ document.getElementById('hero-photo').src     = 'Homepage_Revolutionary Design.w
 const THEME_KEY='oe_theme';
 function applyTheme(mode){
     const day=mode==='day';
+    document.body.classList.add('theme-transition');
     document.body.classList.remove('theme-day','theme-night');
     document.body.classList.add(day?'theme-day':'theme-night');
     const btn=document.getElementById('theme-toggle');
     if(btn)btn.textContent=day?'Mode nuit':'Mode jour';
+    setTimeout(()=>document.body.classList.remove('theme-transition'),700);
 }
 function initTheme(){
     let saved='';
@@ -494,6 +536,36 @@ function initCard3D(){
             card.style.setProperty('--glare-y',`${(y*100).toFixed(1)}%`);
         });
         card.addEventListener('mouseleave',()=>{card.style.transform='';});
+    });
+}
+
+// ─── SHIP PARALLAX ───
+function initShipParallax(){
+    if(window.matchMedia&&window.matchMedia('(pointer: coarse)').matches)return;
+    const header=document.querySelector('.hero-bg');
+    const a=document.getElementById('img-schema-gold');
+    const b=document.getElementById('img-schema-blue');
+    if(!header)return;
+    header.addEventListener('mousemove',e=>{
+        const r=header.getBoundingClientRect();
+        const x=(e.clientX-r.left)/r.width-0.5;
+        const y=(e.clientY-r.top)/r.height-0.5;
+        const tx=x*10,ty=y*6;
+        if(a)a.style.transform=`translate(${tx.toFixed(1)}px,${ty.toFixed(1)}px)`;
+        if(b)b.style.transform=`translate(${(tx*0.65).toFixed(1)}px,${(ty*0.65).toFixed(1)}px)`;
+    });
+    header.addEventListener('mouseleave',()=>{
+        if(a)a.style.transform='';
+        if(b)b.style.transform='';
+    });
+}
+
+// ─── REVEAL STAGGER ───
+function initRevealBlocks(){
+    const blocks=document.querySelectorAll('main > *');
+    blocks.forEach((el,i)=>{
+        el.classList.add('reveal-block');
+        el.style.setProperty('--reveal-delay',`${i*85}ms`);
     });
 }
 
@@ -590,6 +662,51 @@ function triggerRain(type){
 }
 function stopRain(){if(dropAnimId){cancelAnimationFrame(dropAnimId);dropAnimId=null}drops=[];rainCtx.clearRect(0,0,rainCanvas.width,rainCanvas.height)}
 
+// ─── SEA SPRAY (subtle background particles) ───
+const sprayCanvas=document.getElementById('sea-spray-canvas');
+const sprayCtx=sprayCanvas.getContext('2d');
+let sprayDots=[];
+function resizeSpray(){sprayCanvas.width=window.innerWidth;sprayCanvas.height=window.innerHeight}
+window.addEventListener('resize',resizeSpray);resizeSpray();
+function initSeaSpray(){
+    if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    sprayDots=Array.from({length:32},()=>({
+        x:Math.random()*sprayCanvas.width,
+        y:Math.random()*sprayCanvas.height,
+        r:0.6+Math.random()*1.6,
+        vx:0.08+Math.random()*0.18,
+        vy:-0.05-Math.random()*0.15
+    }));
+    requestAnimationFrame(animateSeaSpray);
+}
+function animateSeaSpray(){
+    sprayCtx.clearRect(0,0,sprayCanvas.width,sprayCanvas.height);
+    sprayCtx.fillStyle='rgba(232,212,168,.22)';
+    sprayDots.forEach(p=>{
+        p.x+=p.vx;p.y+=p.vy;
+        if(p.x>sprayCanvas.width+6)p.x=-6;
+        if(p.y<-6)p.y=sprayCanvas.height+6;
+        sprayCtx.beginPath();
+        sprayCtx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        sprayCtx.fill();
+    });
+    requestAnimationFrame(animateSeaSpray);
+}
+
+// ─── CONTRACT EVOLUTION EFFECT ───
+function applyContractEvolution(pct){
+    const p=Math.max(0,Math.min(100,pct));
+    document.documentElement.style.setProperty('--contract-progress',(p/100).toFixed(3));
+    const title=document.getElementById('main-title');
+    if(title){
+        const glow=8+((p/100)*28);
+        const bloom=22+((p/100)*55);
+        title.style.textShadow=`0 0 ${glow.toFixed(0)}px rgba(201,169,110,.55),0 0 ${bloom.toFixed(0)}px rgba(201,169,110,.34)`;
+    }
+    const bodyOverlay=0.9-((p/100)*0.18);
+    document.body.style.setProperty('--overlay-mid',`rgba(13,27,42,${bodyOverlay.toFixed(2)})`);
+}
+
 // ─── Persistence ───
 function saveData(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(contractData))}catch(e){}}
 function loadData(){try{const r=localStorage.getItem(STORAGE_KEY);if(r)Object.assign(contractData,JSON.parse(r))}catch(e){}}
@@ -682,7 +799,7 @@ function tick(){
     if(remaining<=0){
         remaining=0;elapsed=totalMs;
         const title=document.getElementById('main-title');
-        if(title){title.classList.add('fiesta-mode');title.innerHTML='⛵ FIN DE CONTRAT — CAP SUR LA LIBERTÉ ! ⛵'}
+        if(title){title.classList.remove('fiesta-mode');title.innerHTML='OE CORINTHIAN — MISSION ACCOMPLIE'}
         document.getElementById('pct-display').textContent='100.00%';
         document.getElementById('prog-bar').style.width='100%';
         document.getElementById('progress-summary').textContent='🎉 MISSION ACCOMPLIE — FÉLICITATIONS !';
@@ -690,7 +807,7 @@ function tick(){
         document.getElementById('remaining-display').textContent=fmt(0);
         ['cd-days','cd-hours','cd-min','cd-sec'].forEach(id=>document.getElementById(id).textContent='0');
         if(progressChart){progressChart.data.datasets[0].data=[100,0];progressChart.data.datasets[0].backgroundColor=['#57CC99','#2E3F52'];progressChart.update()}
-        if(!dropAnimId)triggerRain('confetti');
+        applyContractEvolution(100);
         if(updateIntervalId)clearInterval(updateIntervalId);if(funFactIntervalId)clearInterval(funFactIntervalId);
         updateFunCounters();return;
     }
@@ -699,6 +816,7 @@ function tick(){
     if(progressChart){progressChart.data.datasets[0].data=[pct,100-pct];progressChart.data.datasets[0].backgroundColor[0]=`hsl(${hue},70%,55%)`;progressChart.update()}
     document.getElementById('pct-display').textContent=pct.toFixed(2)+'%';
     document.getElementById('prog-bar').style.width=pct.toFixed(2)+'%';
+    applyContractEvolution(pct);
     document.getElementById('progress-summary').textContent='[EN ROUTE] '+(elapsed/86400000).toFixed(1)+' j / '+totalDays.toFixed(1)+' j';
     document.getElementById('earned-display').textContent=fmt(earned);
     document.getElementById('remaining-display').textContent=fmt(totalGain-earned);
@@ -726,6 +844,7 @@ function applyChanges(){
     saveData();
     const title=document.getElementById('main-title');
     if(title){title.classList.remove('fiesta-mode');title.innerHTML='OE CORINTHIAN'}
+    applyContractEvolution(0);
     stopRain();lastBurgerNights=-1;
     if(updateIntervalId)clearInterval(updateIntervalId);if(funFactIntervalId)clearInterval(funFactIntervalId);
     updateStatic();tick();
@@ -744,7 +863,7 @@ function populateInputs(){
 // ─── Init ───
 function initApp(){
     initTheme();
-    loadData();populateInputs();initChart();initCard3D();
+    loadData();populateInputs();initChart();initCard3D();initShipParallax();initRevealBlocks();initSeaSpray();
     document.getElementById('input-salary-frequency')?.addEventListener('change',e=>{
         document.getElementById('salary-period-lbl').textContent=freqLabel(e.target.value);
     });
@@ -752,7 +871,7 @@ function initApp(){
     document.getElementById('earned-card')?.addEventListener('click',()=>triggerRain('money'));
     document.getElementById('sunday-card')?.addEventListener('click',()=>triggerRain('sail'));
     document.getElementById('voyage-card')?.addEventListener('click',()=>triggerRain('gold'));
-    showFact();triggerRain('confetti');setTimeout(stopRain,2500);
+    showFact();
     if(contractData.startDate&&contractData.endDate){
         updateStatic();tick();
         updateIntervalId=setInterval(tick,500);funFactIntervalId=setInterval(showFact,60000);
